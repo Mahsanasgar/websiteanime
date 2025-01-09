@@ -5,41 +5,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/pembaharuan.css">
+  <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
 </head>
 <body style="background: rgb(46,9,9);
             background: linear-gradient(180deg, rgba(46,9,9,1) 80%, rgb(255, 0, 0) 120%);">
     <header style="background: rgb(46,9,9);
-            background: linear-gradient(90deg, rgba(46,9,9,1) 0%, rgba(189,0,0,1) 100%);" class="sticky top-0">
+            background: linear-gradient(90deg, rgba(46,9,9,1) 0%, rgba(189,0,0,1) 100%);" class="sticky top-0 z-50">
         <nav class="navbar text-white flex justify-between">
             <div class="logo flex items-center mx-[20px]">
                 <img class="w-[100px] h-[70px] -mr-[20px]" src="img.semuapembaharuan/Logo1.png" alt="">
                 <h1 class="font-bold text-[30px] font-jolly lodger">Xiao Yan</h1>
             </div>
-            <div class="nav-link hidden lg:flex lg:items-center lg:mx-[150px] lg:gap-[46px] md:flex md:items-center md:mx-[100px] md:gap-[30px]  text-[15px]">
-                <a class="hover:text-[#9c3232]" href="/index.html">Beranda</a>
-                <a class="hover:text-[#9c3232]" href="/pages/anime.html">Anime</a>
-                <a class="hover:text-[#9c3232]" href="/pages/donghua.html">Donghua</a>
-                <a class="hover:text-[#9c3232]" href="/pages/populer.html">Terpopuler</a>
-                <a class="hover:text-[#9c3232]" href="/pages/tentang.html">Tentang</a>
+            <div class="nav-link font-bold hidden lg:flex lg:items-center lg:mx-[50px] lg:gap-[30px] md:flex md:items-center md:mx-[100px] md:gap-[30px]  text-[15px]">
+                <a class="hover:text-[#000000]" href="/index.html">Beranda</a>
+                <a class="hover:text-[#000000]" href="/pages/anime.html">Anime</a>
+                <a class="hover:text-[#000000]" href="/pages/donghua.html">Donghua</a>
+                <a class="hover:text-[#000000]" href="/pages/populer.html">Terpopuler</a>
+                <a class="hover:text-[#000000]" href="/pages/tentang.html">Tentang</a>
             </div>
         </nav>
     </header>
-    <main>
-        <div class="hero-image">
-            <img class="w-full h-[450px] lg:h-[650px] " src="img.semuapembaharuan/1.jpg" alt="">
+    <div class="p-16">
+        <div class="max-w-full mx-auto relative" x-data="{
+        activeSlide: 1,
+        slides: [
+        { id: 1, src: 'img.semuapembaharuan/mahsan.jpg' },
+        { id: 2, src: 'img.semuapembaharuan/1.jpg' },
+        { id: 3, src: 'img.semuapembaharuan/3.jpg' },
+        { id: 4, src: 'img.semuapembaharuan/D.png' },
+        { id: 5, src: 'img.semuapembaharuan/Dan.jpeg' },
+        ]
+        }"
+        x-init="setInterval(() => { activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1 }, 2000)"
+        >
+            <!-- Data Loop -->
+             <template x-for="slide in slides" :key="slide.id">
+                <div x-show="activeSlide === slide.id" class="p-24px h-80px flex items-center rounded-lg">
+                    <div>
+                    <img class="w-full h-auto object-cover rounded-lg" :src="slide.src" alt="">
+                </div>
+                </div>
+             </template>
+
+             <!-- Back/Next -->
+              <div class="absolute flex inset-0">
+                <div class="flex items-center justify-between w-1/2 mx-[10px]">
+                    <button
+                     @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
+                     class="hover:text-red-600 text-white font-bold rounded-full w-12 h-12 shadow flex items-center justify-center -ml-16 mx-[15px]" @click="activeSlide--">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                      </svg>
+                      </button>
+                </div>
+                <div class="flex items-center justify-end w-1/2 mx-[10px]">
+                    <button 
+                      @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
+                    class=" hover:text-red-600 text-white font-bold rounded-full w-12 h-12 shadow flex items-center justify-center -mr-16 mx-p15px" @click="activeSlide--">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                          </svg>                          
+                      </button>
+                </div>
+
+              </div>
+
+              <!-- Button -->
+               <div class="absolute w-full flex justify-center px-4 py-5">
+                <template x-for="slide in slides" :key="slide.id">
+                    <button class="flex-1 w-4 h-2 mt-4 mx-2 mb-2 rounded-full overflow-hidden transition-colors duration-200 ease-out hover:bg-red-600 hover:shadow-lg " @click="activeSlide = slide.id"
+                    :class="{
+                    'bg-red-600': activeSlide === slide.id,
+                    'bg-slate-300': activeSlide !== slide.id,
+                    }">
+                    </button>
+                </template>
+               </div>
         </div>
-    </main>
+    </div>
     <div class="video-container mt-[50px] lg:mt-[100px]">
         <div class="title flex flex-col lg:flex-row lg:justify-between items-center lg:mx-[100px]">
             <h1 class="font-bold text-white text-[20px] lg:text-[25px]">Pembaharuan Harian</h1>
-            <div class="nav-link flex flex-wrap justify-center lg:justify-end items-center lg:mx-[100px] gap-[10px] lg:gap-[30px] text-[15px] text-white font-bold mt-[10px]">
-                <a class="hover:text-[#9c3232]" href="">Senin</a>
-                <a class="hover:text-[#9c3232]" href="">Selasa</a>
-                <a class="hover:text-[#9c3232]" href="">Rabu</a>
-                <a class="hover:text-[#9c3232]" href="">Kamis</a>
-                <a class="hover:text-[#9c3232]" href="">Jum'at</a>
-                <a class="hover:text-[#9c3232]" href="">Sabtu</a>
-                <a class="hover:text-[#9c3232]" href="">Minggu</a>
+            <div class="nav-link flex flex-wrap justify-center lg:justify-end items-center lg:mx-[40px] gap-[10px] lg:gap-[30px] text-[15px] text-white font-bold mt-[10px]">
+                <a class="hover:text-[#ffffff]" href="">Senin</a>
+                <a class="hover:text-[#ffffff]" href="">Selasa</a>
+                <a class="hover:text-[#ffffff]" href="">Rabu</a>
+                <a class="hover:text-[#ffffff]" href="">Kamis</a>
+                <a class="hover:text-[#ffffff]" href="">Jum'at</a>
+                <a class="hover:text-[#ffffff]" href="">Sabtu</a>
+                <a class="hover:text-[#ffffff]" href="">Minggu</a>
             </div>
         </div>
     </div>    
